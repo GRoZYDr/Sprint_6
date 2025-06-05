@@ -16,7 +16,7 @@ import static pageobject.MainPage.MAIN_PAGE_URL;
 
 public class OrderPage {
 
-    public static String ORDER_PAGE_URL = MAIN_PAGE_URL + "order";
+    public final static String ORDER_PAGE_URL = MAIN_PAGE_URL + "order";
 
     private final WebDriver driver;
 

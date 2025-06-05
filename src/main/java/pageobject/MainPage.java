@@ -1,14 +1,16 @@
 package pageobject;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
 public class MainPage {
-    public static String MAIN_PAGE_URL = "https://qa-scooter.praktikum-services.ru/";
+    public final static String MAIN_PAGE_URL = "https://qa-scooter.praktikum-services.ru/";
 
     private final WebDriver driver;
     // Вопрос
@@ -68,10 +70,15 @@ public class MainPage {
     }
 
     public void clickOrderMiddleButton() {
+        WebElement middleButton = driver.findElement(orderMiddleButton);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", middleButton);
+
         new WebDriverWait(driver, Duration.ofSeconds(5))
-                .until(ExpectedConditions.elementToBeClickable(orderMiddleButton))
+                .until(ExpectedConditions.elementToBeClickable(middleButton))
                 .click();
     }
+
 
     public boolean checkOrderMiddleButtonIsEnabled() {
         return driver.findElement(orderMiddleButton).isEnabled();

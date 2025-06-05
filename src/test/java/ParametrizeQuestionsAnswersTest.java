@@ -1,46 +1,29 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pageobject.MainPage;
 
-import java.time.Duration;
 import java.util.stream.Stream;
 
-public class ParametrazeTestQuestionsAnswers {
-    private WebDriver driver;
-    private WebDriverWait wait;
+public class ParametrizeQuestionsAnswersTest extends AbstractTest {
     private MainPage objMainPage;
 
     @BeforeEach
     public void setUp() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        driver.manage().window().maximize();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        baseSetUp();
         objMainPage = new MainPage(driver);
         objMainPage.openMainPage();
-    }
-
-    @AfterEach
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
+        objMainPage.clickCookieesButton();
     }
 
     @ParameterizedTest
     @MethodSource("parameters")
     public void testQuestionsAnswer(int questionsIndex, String expectedAnswer) {
-        // Нажать на кнопку согласия с cookies
-        objMainPage.clickCookieesButton();
-
         // Скрол до раздела "Вопросы о важном"
         WebElement sectionImportant = driver.findElement(objMainPage.getSectionImportant());
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", sectionImportant);
